@@ -1,25 +1,25 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { withLDProvider } from 'launchdarkly-react-client-sdk';
+import { v4 } from 'uuid';
 
-function App() {
+import UserProfile from './UserProfile';
+import { GridColumn, Grid } from 'semantic-ui-react';
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Grid columns={4} centered>
+      <GridColumn>
+        <UserProfile />
+      </GridColumn>
+    </Grid>
   );
-}
+};
 
-export default App;
+export default withLDProvider({
+  clientSideID: process.env.REACT_APP_CLIENT_KEY,
+  user: {
+    key: v4(),
+    name: 'adam.smith',
+    email: 'adam.smith@unique.com',
+  },
+})(App);
